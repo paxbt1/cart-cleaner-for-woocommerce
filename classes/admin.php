@@ -1,56 +1,71 @@
 <?php
 
-class cart_freeze_admin
+class CartCleanAdmin
 {
     public function __construct()
     {
-        add_action('admin_menu', array($this,'stock_freeze_menu'));
-
-        add_action('admin_init', array($this,'stock_freeze_settings_init'));
-
+        add_action('admin_menu', array($this, 'cartCleanMenu'));
+        add_action('admin_init', array($this, 'cartCleanSettingsInit'));
     }
 
     // Register the admin menu item
-    public function stock_freeze_menu()
+    public function cartCleanMenu()
     {
-        add_menu_page('Stock Freeze Settings', 'Stock Freeze', 'manage_options', 'stock-freeze-settings', array($this,'stock_freeze_settings_page'));
+        add_menu_page(esc_html('Cart Clean Settings', 'CCforWoocommerce'), esc_html('Cart Clean', 'CCforWoocommerce'), 'manage_options', 'cart-clean-settings', array($this, 'cartCleanSettingsPage'));
     }
 
     // Create the plugin settings page
-    public function stock_freeze_settings_page()
+    public function cartCleanSettingsPage()
     {
         ?>
-    <div class="wrap">
-        <h2>Stock Freeze Settings</h2>
-        <form method="post" action="options.php">
-            <?php
-                settings_fields('stock_freeze_settings');
-        do_settings_sections('stock-freeze-settings');
-        submit_button();
-        ?>
-        </form>
-    </div>
-    <?php
+        <div class="wrap">
+            <h2><?= esc_html('Cart Clean Settings', 'CCforWoocommerce');?></h2>
+            <form method="post" action="options.php">
+                <?php
+                settings_fields('cart_clean_settings');
+                do_settings_sections('cart-clean-settings');
+                submit_button();
+                ?>
+            </form>
+        </div>
+        <?php
     }
 
-    // Define and register the setting for stock-freeze-time
-    public function stock_freeze_settings_init()
+    // Define and register the setting for cart-clean-time and stock-freeze-quantity
+    public function cartCleanSettingsInit()
     {
-        register_setting('stock_freeze_settings', 'stock_freeze_time', 'intval');
-        add_settings_section('stock_freeze_section', 'Stock Freeze Time', array($this,'stock_freeze_section_callback'), 'stock-freeze-settings');
-        add_settings_field('stock_freeze_time', 'Minutes', array($this,'stock_freeze_stock_freeze_time_callback'), 'stock-freeze-settings', 'stock_freeze_section');
+        // Register the cart clean time setting
+        register_setting('cart_clean_settings', 'cart_clean_time', 'intval');
+        add_settings_section('cart_clean_section', esc_html('Cart Clean Time', 'CCforWoocommerce'), array($this, 'cartCleanSectionCallback'), 'cart-clean-settings');
+        add_settings_field('cart_clean_time', esc_html('Minutes', 'CCforWoocommerce'), array($this, 'cartCleanCartCleanTimeCallback'), 'cart-clean-settings', 'cart_clean_section');
+
+        // Register the stock freeze quantity setting as a checkbox
+        register_setting('cart_clean_settings', 'stock_freeze_quantity', 'intval');
+        add_settings_section('stock_freeze_section', esc_html('Stock Freeze Quantity', 'CCforWoocommerce'), array($this, 'stockFreezeSectionCallback'), 'cart-clean-settings');
+        add_settings_field('stock_freeze_quantity', esc_html('Enable Stock Freeze Quantity', 'CCforWoocommerce'), array($this, 'stockFreezeQuantityCallback'), 'cart-clean-settings', 'stock_freeze_section');
     }
 
     // Callback functions for the settings page
-    public function stock_freeze_section_callback()
+    public function cartCleanSectionCallback()
     {
-        echo 'Set the Stock Freeze Time (in minutes):';
+        echo esc_html('Set the Cart Clean Time (in minutes):', 'CCforWoocommerce');
     }
 
-    public function stock_freeze_stock_freeze_time_callback()
+    public function cartCleanCartCleanTimeCallback()
     {
-        $stock_freeze_time = get_option('stock_freeze_time');
-        echo '<input type="number" name="stock_freeze_time" value="' . esc_attr($stock_freeze_time) . '" />';
+        $cartCleanTime = get_option('cart_clean_time');
+        echo '<input type="number" name="cart_clean_time" value="' . esc_attr($cartCleanTime) . '" />';
     }
 
+    public function stockFreezeSectionCallback()
+    {
+        echo esc_html('Stock Freeze Quantity Information: With this option, you can reduce stock quantity by just adding to cart. Please note that if a product is automatically removed from the cart, stock quantity will be restored to the product.', 'CCforWoocommerce');
+    }
+
+    public function stockFreezeQuantityCallback()
+    {
+        $stockFreezeQuantity = get_option('stock_freeze_quantity');
+        $checked = checked(1, $stockFreezeQuantity, false); // Check the checkbox if the option is 1 (enabled).
+        echo '<label for="stock_freeze_quantity"><input type="checkbox" id="stock_freeze_quantity" name="stock_freeze_quantity" value="1" ' . $checked . ' /> Enable Stock Freeze Quantity</label>';
+    }
 }
