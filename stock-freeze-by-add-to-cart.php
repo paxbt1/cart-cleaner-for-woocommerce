@@ -31,9 +31,7 @@ function wc_minimum_hours_to_remove_product($cart)
 
         $remove_cart_item = false;
         if(isset($cart_item['product_added_to_cart_date']) && ! empty($cart_item['product_added_to_cart_date'])) {
-            echo $cart_item['quantity'].'<br>';
             $hourdiff = round((strtotime('now') - $cart_item['product_added_to_cart_date']) / 60, 1);
-            echo '$hourdiff='.$hourdiff;
             if($hourdiff >= get_option('stock_freeze_time')) {
                 $remove_cart_item = true;
 
@@ -104,4 +102,55 @@ function add_custom_field_date_and_reduce_stock($cart_item_data, $product_id, $v
     $cart_item_data['unique_key'] = md5(microtime() . rand());
 
     return $cart_item_data;
+}
+
+
+
+function add_countdown_timer_after_cart_item_name($item_name, $cart_item, $cart_item_key)
+{
+
+    $hourdiff = (get_option('stock_freeze_time') * 60) - (strtotime('now') - $cart_item['product_added_to_cart_date']);
+    // Append a countdown timer after the cart item name
+    $item_name = '<span><span class="countdown-timer" data-timer="'.$hourdiff.'"></span> - to remove: </span>'.$item_name;
+
+    return $item_name;
+}
+add_filter('woocommerce_cart_item_name', 'add_countdown_timer_after_cart_item_name', 10, 3);
+
+add_action('woocommerce_before_cart', 'timer_script');
+function timer_script()
+{
+    ?>
+    <!-- Add this script in your HTML file -->
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        var countdownTimers = document.querySelectorAll('.countdown-timer');
+
+        countdownTimers.forEach(function(timerElement) {
+            var timerValue = parseInt(timerElement.getAttribute('data-timer'));
+            var timerInterval = setInterval(function() {
+                if (timerValue <= 0) {
+                    clearInterval(timerInterval);
+                    location.reload();
+
+                } else {
+                    var minutes = Math.floor(timerValue / 60);
+                    var seconds = timerValue % 60;
+                    timerElement.innerHTML = pad(minutes) + ':' + pad(seconds);
+                    timerValue--;
+
+                    if (timerValue <= 20) {
+                        timerElement.style.color = 'red';
+                    }
+                }
+            }, 1000);
+        });
+
+        function pad(value) {
+            return (value < 10) ? '0' + value : value;
+        }
+    });
+</script>
+
+    <?php
 }
