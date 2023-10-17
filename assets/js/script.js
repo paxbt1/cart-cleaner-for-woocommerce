@@ -1,30 +1,4 @@
-<?php
-/**
- * Plugin Name: Auto Cart Cleanner for Woocommerce
- * Description: Auto Cart Cleanner for Woocommerce
- * Version: 1.0
- * Author: Saeed Ghourbanian
- * Text Domain:CCforWoocommerce
- */
-
-if(!defined("ABSPATH")) {
-    exit;
-}
-
-require_once "classes/admin.php";
-require_once "classes/cleanner.php";
-
-new CartCleanAdmin();
-new CartManagement();
-
-
-add_action('woocommerce_before_cart', 'timer_script');
-function timer_script()
-{
-    ?>
-    <!-- Add this script in your HTML file -->
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
         var countdownTimers = document.querySelectorAll('.countdown-timer');
 
         countdownTimers.forEach(function(timerElement) {
@@ -32,7 +6,7 @@ function timer_script()
             var timerInterval = setInterval(function() {
                 if (timerValue <= 0) {
                     clearInterval(timerInterval);
-                    // location.reload();
+                    location.reload();
 
                 } else {
                     var minutes = Math.floor(timerValue / 60);
@@ -51,7 +25,3 @@ function timer_script()
             return (value < 10) ? '0' + value : value;
         }
     });
-</script>
-
-    <?php
-}
