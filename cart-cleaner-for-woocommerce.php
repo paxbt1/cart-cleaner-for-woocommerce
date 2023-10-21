@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Auto Cart Cleaner for WooCommerce
- * Description: Optimize WooCommerce carts with automatic cleaning and real-time stock management on add-to-cart and remove-from-cart actions.
+ * Description: Automatic cleaning cart and real-time stock management on add-to-cart and remove-from-cart actions.
  * Version: 1.0
  * Author: Saeed Ghourbanian
  * Author URI: https://www.linkedin.com/in/saeed-ghourbanian/
@@ -35,7 +35,7 @@ function enqueue_custom_cart_script()
 add_action('wp_enqueue_scripts', 'enqueue_custom_cart_script');
 
 // Activation check
-function cc_for_woocommerce_plugin_activation_check()
+function acc_for_woocommerce_plugin_activation_check()
 {
     if (!class_exists('WooCommerce')) {
         // WooCommerce is not installed or not active
@@ -43,6 +43,6 @@ function cc_for_woocommerce_plugin_activation_check()
         wp_die(esc_html__("Auto Cart Cleaner for WooCommerce requires WooCommerce to be installed and active. Please install and activate WooCommerce before using this plugin.", 'auto-cart-cleaner-for-wooCommerce'));
     }
 }
-register_activation_hook(__FILE__, 'cc_for_woocommerce_plugin_activation_check');
+register_activation_hook(__FILE__, 'acc_for_woocommerce_plugin_activation_check');
 
 
