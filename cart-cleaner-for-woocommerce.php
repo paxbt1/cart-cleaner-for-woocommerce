@@ -5,7 +5,7 @@
  * Version: 1.0
  * Author: Saeed Ghourbanian
  * Author URI: https://www.linkedin.com/in/saeed-ghourbanian/
- * Text Domain: CCforWoocommerce
+ * Text Domain: auto-cart-cleaner-for-wooCommerce
  * License: GPL-3.0
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Domain Path: /languages
@@ -40,7 +40,7 @@ function cc_for_woocommerce_plugin_activation_check()
     if (!class_exists('WooCommerce')) {
         // WooCommerce is not installed or not active
         deactivate_plugins(plugin_basename(__FILE__));
-        wp_die(esc_html__("Auto Cart Cleaner for WooCommerce requires WooCommerce to be installed and active. Please install and activate WooCommerce before using this plugin.", 'CCforWoocommerce'));
+        wp_die(esc_html__("Auto Cart Cleaner for WooCommerce requires WooCommerce to be installed and active. Please install and activate WooCommerce before using this plugin.", 'auto-cart-cleaner-for-wooCommerce'));
     }
 }
 register_activation_hook(__FILE__, 'cc_for_woocommerce_plugin_activation_check');

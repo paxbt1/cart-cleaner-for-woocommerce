@@ -13,7 +13,7 @@ class CartCleanAdmin
     public function cart_clean_menu()
     {
         // cart_clean_menu: Registers the admin menu item.
-        add_menu_page(esc_html__('Cart Clean Settings', 'CCforWoocommerce'), esc_html__('Cart Clean', 'CCforWoocommerce'), 'manage_options', 'cart-clean-settings', array($this, 'cart_clean_settings_page'));
+        add_menu_page(esc_html__('Cart Clean Settings', 'auto-cart-cleaner-for-wooCommerce'), esc_html__('Cart Clean', 'auto-cart-cleaner-for-wooCommerce'), 'manage_options', 'cart-clean-settings', array($this, 'cart_clean_settings_page'));
     }
 
     // Create the plugin settings page
@@ -22,7 +22,7 @@ class CartCleanAdmin
         // cart_clean_settings_page: Renders the plugin settings page.
         ?>
         <div class="wrap">
-            <h2><?= esc_html__('Cart Clean Settings', 'CCforWoocommerce');?></h2>
+            <h2><?= esc_html__('Cart Clean Settings', 'auto-cart-cleaner-for-wooCommerce');?></h2>
             <form method="post" action="options.php">
                 <?php
                 settings_fields('cart_clean_settings');
@@ -41,20 +41,20 @@ class CartCleanAdmin
 
         // Register the cart clean time setting
         register_setting('cart_clean_settings', 'cart_clean_time', 'intval');
-        add_settings_section('cart_clean_section', esc_html__('Cart Clean Time', 'CCforWoocommerce'), array($this, 'cart_clean_section_callback'), 'cart-clean-settings');
-        add_settings_field('cart_clean_time', esc_html__('Minutes', 'CCforWoocommerce'), array($this, 'cart_clean_cart_clean_time_callback'), 'cart-clean-settings', 'cart_clean_section');
+        add_settings_section('cart_clean_section', esc_html__('Cart Clean Time', 'auto-cart-cleaner-for-wooCommerce'), array($this, 'cart_clean_section_callback'), 'cart-clean-settings');
+        add_settings_field('cart_clean_time', esc_html__('Minutes', 'auto-cart-cleaner-for-wooCommerce'), array($this, 'cart_clean_cart_clean_time_callback'), 'cart-clean-settings', 'cart_clean_section');
 
         // Register the Stock Quantity Sync setting as a checkbox
         register_setting('cart_clean_settings', 'stock_quantity_sync', 'intval');
-        add_settings_section('stock_quantity_sync_section', esc_html__('Stock Quantity Sync', 'CCforWoocommerce'), array($this, 'stock_quantity_sync_section_callback'), 'cart-clean-settings');
-        add_settings_field('stock_quantity_sync', esc_html__('Enable Stock Quantity Sync', 'CCforWoocommerce'), array($this, 'stock_quantity_sync_callback'), 'cart-clean-settings', 'stock_quantity_sync_section');
+        add_settings_section('stock_quantity_sync_section', esc_html__('Stock Quantity Sync', 'auto-cart-cleaner-for-wooCommerce'), array($this, 'stock_quantity_sync_section_callback'), 'cart-clean-settings');
+        add_settings_field('stock_quantity_sync', esc_html__('Enable Stock Quantity Sync', 'auto-cart-cleaner-for-wooCommerce'), array($this, 'stock_quantity_sync_callback'), 'cart-clean-settings', 'stock_quantity_sync_section');
     }
 
     // Callback functions for the settings page
     public function cart_clean_section_callback()
     {
         // cart_clean_section_callback: Callback for the Cart Clean Time section.
-        echo esc_html__('Set the Cart Clean Time (in minutes):', 'CCforWoocommerce');
+        echo esc_html__('Set the Cart Clean Time (in minutes):', 'auto-cart-cleaner-for-wooCommerce');
     }
 
     public function cart_clean_cart_clean_time_callback()
@@ -67,7 +67,7 @@ class CartCleanAdmin
     public function stock_quantity_sync_section_callback()
     {
         // stock_quantity_sync_section_callback: Callback for the Stock Quantity Sync Quantity section.
-        echo esc_html__('Stock Quantity Sync : Enable this option to dynamically adjust product stock quantities when items are added to the cart, and automatically return them to their original levels when items are removed.', 'CCforWoocommerce');
+        echo esc_html__('Stock Quantity Sync : Enable this option to dynamically adjust product stock quantities when items are added to the cart, and automatically return them to their original levels when items are removed.', 'auto-cart-cleaner-for-wooCommerce');
     }
 
     public function stock_quantity_sync_callback()
