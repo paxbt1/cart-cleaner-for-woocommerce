@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class CartCleanAdmin
 {
@@ -26,15 +26,15 @@ class CartCleanAdmin
             <form method="post" action="options.php">
                 <?php
                 settings_fields('cart_clean_settings');
-                do_settings_sections('cart-clean-settings');
-                submit_button();
-                ?>
+        do_settings_sections('cart-clean-settings');
+        submit_button();
+        ?>
             </form>
         </div>
         <?php
     }
 
-    // Define and register the setting for cart-clean-time and stock-freeze-quantity
+    // Define and register the setting for cart-clean-time and stock_quantity_sync
     public function cart_clean_settings_init()
     {
         // cart_clean_settings_init: Initializes and registers plugin settings.
@@ -44,10 +44,10 @@ class CartCleanAdmin
         add_settings_section('cart_clean_section', esc_html__('Cart Clean Time', 'CCforWoocommerce'), array($this, 'cart_clean_section_callback'), 'cart-clean-settings');
         add_settings_field('cart_clean_time', esc_html__('Minutes', 'CCforWoocommerce'), array($this, 'cart_clean_cart_clean_time_callback'), 'cart-clean-settings', 'cart_clean_section');
 
-        // Register the stock freeze quantity setting as a checkbox
-        register_setting('cart_clean_settings', 'stock_freeze_quantity', 'intval');
-        add_settings_section('stock_freeze_section', esc_html__('Stock Freeze Quantity', 'CCforWoocommerce'), array($this, 'stock_freeze_section_callback'), 'cart-clean-settings');
-        add_settings_field('stock_freeze_quantity', esc_html__('Enable Stock Freeze Quantity', 'CCforWoocommerce'), array($this, 'stock_freeze_quantity_callback'), 'cart-clean-settings', 'stock_freeze_section');
+        // Register the Stock Quantity Sync setting as a checkbox
+        register_setting('cart_clean_settings', 'stock_quantity_sync', 'intval');
+        add_settings_section('stock_quantity_sync_section', esc_html__('Stock Quantity Sync', 'CCforWoocommerce'), array($this, 'stock_quantity_sync_section_callback'), 'cart-clean-settings');
+        add_settings_field('stock_quantity_sync', esc_html__('Enable Stock Quantity Sync', 'CCforWoocommerce'), array($this, 'stock_quantity_sync_callback'), 'cart-clean-settings', 'stock_quantity_sync_section');
     }
 
     // Callback functions for the settings page
@@ -64,17 +64,17 @@ class CartCleanAdmin
         echo '<input type="number" name="cart_clean_time" value="' . esc_attr($cartCleanTime) . '" />';
     }
 
-    public function stock_freeze_section_callback()
+    public function stock_quantity_sync_section_callback()
     {
-        // stock_freeze_section_callback: Callback for the Stock Freeze Quantity section.
-        echo esc_html__('Stock Freeze Quantity Information: With this option, you can reduce stock quantity by just adding to cart. Please note that if a product is automatically removed from the cart, stock quantity will be restored to the product.', 'CCforWoocommerce');
+        // stock_quantity_sync_section_callback: Callback for the Stock Quantity Sync Quantity section.
+        echo esc_html__('Stock Quantity Sync : Enable this option to dynamically adjust product stock quantities when items are added to the cart, and automatically return them to their original levels when items are removed.', 'CCforWoocommerce');
     }
 
-    public function stock_freeze_quantity_callback()
+    public function stock_quantity_sync_callback()
     {
-        // stock_freeze_quantity_callback: Callback for the Stock Freeze Quantity checkbox field.
-        $stockFreezeQuantity = get_option('stock_freeze_quantity');
-        $checked = checked(1, $stockFreezeQuantity, false); // Check the checkbox if the option is 1 (enabled).
-        echo '<label for="stock_freeze_quantity"><input type="checkbox" id="stock_freeze_quantity" name="stock_freeze_quantity" value="1" ' . $checked . ' /> Enable Stock Freeze Quantity</label>';
+        // stock_quantity_sync_callback: Callback for the Stock Quantity Sync checkbox field.
+        $stock_quantity_sync = get_option('stock_quantity_sync');
+        $checked = checked(1, $stock_quantity_sync, false); // Check the checkbox if the option is 1 (enabled).
+        echo '<label for="stock_quantity_sync"><input type="checkbox" id="stock_quantity_sync" name="stock_quantity_sync" value="1" ' . $checked . ' /> Enable</label>';
     }
 }

@@ -1,26 +1,32 @@
-<?php 
+<?php
+
 
 class CartManagement
 {
     private $cart_clean_timer = null;
-    private $stock_freeze_quantity = null;
+    private $stock_quantity_sync = null;
 
     public function __construct()
     {
         // Constructor: Initializes hooks and settings
         // and sets the cart clean timer value.
-        add_action('woocommerce_before_calculate_totals', array($this, 'remove_expired_products'), 10, 1);
+        add_action('woocommerce_before_calculate_totals', array($this, 'remove_expired_products'), 1, 1);
         add_filter('woocommerce_add_cart_item_data', array($this, 'add_custom_field_and_reduce_stock'), 20, 3);
         add_filter('woocommerce_cart_item_name', array($this, 'add_countdown_timer_after_cart_item_name'), 10, 3);
         add_action('woocommerce_remove_cart_item', array($this,'increase_stock_quantity_on_remove'), 10, 2);
         $this->cart_clean_timer = get_option('cart_clean_time', 5);
-        $this->stock_freeze_quantity = get_option('cart_clean_time', 0);
+        $this->stock_quantity_sync = get_option('stock_quantity_sync', 0);
     }
 
     public function increase_stock_quantity_on_remove($cart_item_key, $cart)
     {
-        // Check if the "stock_freeze_quantity" option is true
-        if ($this->stock_freeze_quantity == 1) {
+
+        if(did_action('woocommerce_before_calculate_totals') >= 1) {
+            return;
+        }
+
+        // Check if the "stock_quantity_sync" option is true
+        if ($this->stock_quantity_sync == 1) {
             // Get the cart item data
             $cart_item = $cart->cart_contents[$cart_item_key];
             // Check if it's a variable product
@@ -48,7 +54,7 @@ class CartManagement
     public function remove_expired_products($cart)
     {
         // remove_expired_products: Removes expired products from the cart.
-        // $cart: The WooCommerce cart object
+
 
         if (is_admin() && !defined('DOING_AJAX')) {
             return;
@@ -66,7 +72,7 @@ class CartManagement
 
                 if ($hourdiff >= $this->cart_clean_timer) {
                     $remove_cart_item = true;
-                    if($this->stock_freeze_quantity) {
+                    if($this->stock_quantity_sync) {
                         $this->increase_stock_quantity($cart_item);
                     }
                 }
@@ -80,7 +86,7 @@ class CartManagement
 
     public function add_custom_field_and_reduce_stock($cart_item_data, $product_id, $variation_id)
     {
-        if($this->stock_freeze_quantity) {
+        if($this->stock_quantity_sync) {
             $product = wc_get_product($product_id);
             $is_variable = $product->is_type('variable');
 
@@ -111,7 +117,6 @@ class CartManagement
     {
         if (!empty($cart_item['variation_id'])) {
             $variation_id = $cart_item['variation_id'];
-            $parent_id = wp_get_post_parent_id($variation_id);
             $variation_product = wc_get_product($variation_id);
             $new_stock_quantity = $variation_product->get_stock_quantity() + $cart_item['quantity'];
             $this->update_stock_quantity($variation_product, $new_stock_quantity);

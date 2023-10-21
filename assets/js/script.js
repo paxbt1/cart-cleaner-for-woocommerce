@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     timerElement.innerHTML = pad(minutes) + ':' + pad(seconds);
                     timerValue--;
 
-                    if (timerValue <= 20) {
+                    if (timerValue <= 59) {
                         timerElement.style.color = 'red';
                     }
                 }
