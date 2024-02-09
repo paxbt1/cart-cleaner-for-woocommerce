@@ -22,7 +22,7 @@ class CartCleanAdmin
         // cart_clean_settings_page: Renders the plugin settings page.
         ?>
         <div class="wrap">
-            <h2><?= esc_html__('Cart Clean Settings', 'auto-cart-cleaner-for-wooCommerce');?></h2>
+            <h2><?php  esc_html__('Cart Clean Settings', 'auto-cart-cleaner-for-wooCommerce');?></h2>
             <form method="post" action="options.php">
                 <?php
                 settings_fields('cart_clean_settings');
