@@ -1,5 +1,5 @@
 === Auto Cart Cleaner for WooCommerce ===
-Contributors: Your Name
+Contributors: Saeed Ghourbanian
 Tags: woocommerce, cart cleaner, stock management, e-commerce
 Requires at least: 5.0
 Tested up to: 5.9
