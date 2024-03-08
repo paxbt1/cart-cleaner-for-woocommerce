@@ -1,9 +1,10 @@
 === Auto Cart Cleaner for WooCommerce ===
-Contributors: Saeed Ghourbanian
+Contributors: ghourbanian
 Tags: woocommerce, cart cleaner, stock management, e-commerce
-Requires at least: 5.0
-Tested up to: 5.9
-Stable tag: 1.0
+Requires at least: 6.3
+Tested up to: 6.4
+Requires PHP: 7.4
+Stable tag: 8.6.1
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -16,7 +17,6 @@ Key Features:
 - **Enhanced User Experience:** Ensures a seamless shopping experience by preventing cart clutter and stock-related issues.
 - **Easy Configuration:** User-friendly settings to define cart cleaning intervals and stock management preferences.
 - **WooCommerce Compatibility:** Fully compatible with WooCommerce 4.0 and later versions.
-
 
 == Installation ==
 1. Upload the 'auto-cart-cleaner-for-woocommerce' folder to the `/wp-content/plugins/` directory.
@@ -40,6 +40,8 @@ you can simply check the Enable Stock Quantity Sync at the cart-clean-settings p
 == Upgrade Notice ==
 = 1.0 =
 Initial release.
+
+== Screenshots == 
 
 == License ==
 Auto Cart Cleaner for WooCommerce is released under the GNU General Public License, version 3.0. For full details, please visit https://www.gnu.org/licenses/gpl-3.0.html.
